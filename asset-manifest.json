@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/FarAlex54/hakaton.git/static/css/main.b96702da.css",
+    "main.js": "/FarAlex54/hakaton.git/static/js/main.61d83b09.js",
+    "static/js/787.d98de4bb.chunk.js": "/FarAlex54/hakaton.git/static/js/787.d98de4bb.chunk.js",
+    "index.html": "/FarAlex54/hakaton.git/index.html",
+    "main.b96702da.css.map": "/FarAlex54/hakaton.git/static/css/main.b96702da.css.map",
+    "main.61d83b09.js.map": "/FarAlex54/hakaton.git/static/js/main.61d83b09.js.map",
+    "787.d98de4bb.chunk.js.map": "/FarAlex54/hakaton.git/static/js/787.d98de4bb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b96702da.css",
+    "static/js/main.61d83b09.js"
+  ]
+}
