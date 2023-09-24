@@ -17,7 +17,7 @@ function App() {
   var options = {
     enableHighAccuracy: true,
     timeout: 5000,
-    maximumAge: 0,
+    maximumAge: 0
   };
 
   function errors() {
