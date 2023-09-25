@@ -3,9 +3,9 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import MapPos from './MapPos';
 import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
-import { useEffect } from "react";
-import { useState } from 'react';
+import { useState, useEffect } from "react";
 
 
 
@@ -47,17 +47,20 @@ function App() {
       <Form>
         <div className="d-flex flex-row">
           <div className='p-2 col-9 bg-danger'>
-            <YMaps>
-                <Map defaultState={{ center: [54.9832693, 82.8963831], zoom: 15 }}>
+            <p>Широта:{lat}</p>
+            <p>Долгота:{long}</p>
+            <p>Точность:{accuracy}</p>
+{/*             <YMaps>
+                <Map defaultState={{ center: [lat, long], zoom: 15 }}>
                   <Placemark 
                   modules={["geoObject.addon.balloon"]}
                   defaultGeometry={[lat, long]}
                   properties={{
                     balloonContentBody:
-                      "Широта: " + 54.9832693 + ", Долгота: " + 82.8963831 + ", Точность: " + accuracy + " м",
+                      "Широта: " + lat + ", Долгота: " + long + ", Точность: " + accuracy + " м",
                   }}/>
                 </Map>
-            </YMaps>
+            </YMaps> */}
           </div>
             {console.log("Широта: " + lat + ", Долгота: " + long + ", Точность: " + accuracy + " м")}
           <div className='p-2 col-3'>
