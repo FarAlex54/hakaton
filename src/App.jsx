@@ -1,4 +1,5 @@
 import './App.css';
+import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -7,8 +8,10 @@ import { useEffect } from "react";
 import { useState } from 'react';
 
 
+
 /* Широта: 55.0095388, Долгота: 82.4246794, Точность: 20 м */
 /* Широта: 54.9832693, Долгота: 82.8963831, Точность: 12053.58603605653 м */
+/*   "homepage": "https://github.com/FarAlex54/hakaton.git", */
 
 function App() {
   const [lat, setLat] = useState();
@@ -17,7 +20,7 @@ function App() {
   var options = {
     enableHighAccuracy: true,
     timeout: 5000,
-    maximumAge: 0
+    maximumAge: 10000
   };
 
   function errors() {
@@ -25,7 +28,7 @@ function App() {
   }
 
   useEffect(() => {
-    function locateUser() {
+    const locateUser = () => {
     if (navigator.geolocation) {
       navigator.permissions
         .query({ name: "geolocation" })
@@ -36,29 +39,27 @@ function App() {
                                                                      setAccuracy(pos.coords.accuracy);}, errors, options);
                   }
                 });}}
-/*     if (accuracy>100) {console.log('1'); */
     locateUser();
   },[]);
  
   return (
     <div className="App">
       <Form>
-        <div className="d-flex ">
-          <div className='d-flex justify-content-center p-2 col-9 '>
+        <div className="d-flex flex-row">
+          <div className='p-2 col-9 bg-danger'>
             <YMaps>
-              <div>
-                <Map defaultState={{ center: [lat, long], zoom: 15 }}>
+                <Map defaultState={{ center: [54.9832693, 82.8963831], zoom: 15 }}>
                   <Placemark 
                   modules={["geoObject.addon.balloon"]}
                   defaultGeometry={[lat, long]}
                   properties={{
                     balloonContentBody:
-                      "Широта: " + lat + ", Долгота: " + long + ", Точность: " + accuracy + " м",
+                      "Широта: " + 54.9832693 + ", Долгота: " + 82.8963831 + ", Точность: " + accuracy + " м",
                   }}/>
                 </Map>
-              </div>
             </YMaps>
           </div>
+            {console.log("Широта: " + lat + ", Долгота: " + long + ", Точность: " + accuracy + " м")}
           <div className='p-2 col-3'>
               <Form.Group className="mb-3" controlId="formBasicCheckbox">
                 <Form.Check type="checkbox" label="БанкУслуга 1" />

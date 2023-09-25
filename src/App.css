@@ -8,3 +8,7 @@ body{
   background-color: gray;
 }
 
+.map{
+  width: 100%;
+  height: auto;
+}
