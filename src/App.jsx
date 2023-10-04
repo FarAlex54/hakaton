@@ -8,6 +8,9 @@ const APIkey = "301284d6b96c42f8825c6077114ba012";
 
 function App() {
   const [location, setLocation] = useState();
+  const [lat,setLat] = useState();
+  const [long,setLong] = useState();
+  const [accuracy,setAccuracy] = useState();
 
   function getLocationInfo(latitude, longitude) {
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude},${longitude}&key=${APIkey}`;
@@ -31,16 +34,18 @@ function App() {
   };
   function success(pos) {
     var crd = pos.coords;
-    console.log("Your current position is:");
-    console.log(`Latitude : ${crd.latitude}`);
-    console.log(`Longitude: ${crd.longitude}`);
-    console.log(`More or less ${crd.accuracy} meters.`);
-
+    console.log("Ваше местоположение:");
+    console.log(`Широта : ${crd.latitude}`);
+    console.log(`Долгота: ${crd.longitude}`);
+    console.log(`Точность ${crd.accuracy} метров.`);
+    setLat(crd.latitude);
+    setLong(crd.longitude);
+    setAccuracy(crd.accuracy);
     getLocationInfo(crd.latitude, crd.longitude);
   }
 
   function errors(err) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
+    console.warn(`Ошибка определения положения: (${err.code}): ${err.message}`);
   }
 
   useEffect(() => {
@@ -49,24 +54,19 @@ function App() {
         .query({ name: "geolocation" })
         .then(function (result) {
           console.log(result);
-          if (result.state === "granted") {
-            //If granted then you can directly call your function here
-            navigator.geolocation.getCurrentPosition(success, errors, options);
-          } else if (result.state === "prompt") {
-            //If prompt then the user will be asked to give permission
-            navigator.geolocation.getCurrentPosition(success, errors, options);
-          } else if (result.state === "denied") {
-            //If denied then you have to show instructions to enable location
-          }
+          if (result.state === "granted") {navigator.geolocation.getCurrentPosition(success, errors, options);}
+          else if (result.state === "prompt") {navigator.geolocation.getCurrentPosition(success, errors, options);}
+          else if (result.state === "denied") {}
         });
-    } else {
-      console.log("Geolocation is not supported by this browser.");
-    }
+    } else {console.log("Доступ к геоданным закрыт браузером");}
   }, []);
 
   return (
     <div className="App">
       {location ? <>Your location: {location}</> : null}
+      <p>Широта: {lat}</p>
+      <p>Долгота: {long}</p>
+      <p>Точность: {accuracy}</p>
     </div>
   );
 }
