@@ -50,7 +50,8 @@ function App() {
             <p>Широта:{lat}</p>
             <p>Долгота:{long}</p>
             <p>Точность:{accuracy}</p>
-{/*             <YMaps>
+            <p>Точность:{accuracy}</p>
+{/*             <YMaps>vcdvdsv
                 <Map defaultState={{ center: [lat, long], zoom: 15 }}>
                   <Placemark 
                   modules={["geoObject.addon.balloon"]}
