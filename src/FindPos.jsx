@@ -1,34 +1,64 @@
-import { useState, useEffect } from 'react';
+import React from 'react'
+import { useEffect } from "react";
+import "./App.css";
+import { AppContext } from './App';
 
-export const usePosition = () => {
-  const [position, setPosition] = useState({});
-  const [error, setError] = useState(null);
+const APIkey = "301284d6b96c42f8825c6077114ba012";
 
-  const onChange = ({latitude, longitude}) => {
-    // Здесь мы могли бы сохранить весь объект position, но для
-    // ясности давайте явно перечислим, какие свойства нас интересуют.
-    setPosition({latitude, longitude});
+const FindPos = () => {
+  const findPosContext = React.useContext(AppContext);
+  function getLocationInfo(latitude, longitude) {
+    const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude},${longitude}&key=${APIkey}`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.status.code === 200) {
+          console.log("results:", data.results);
+          findPosContext.setLocation(data.results[0].formatted);
+        } else {
+          console.log("Reverse geolocation request failed.");
+        }
+      })
+      .catch((error) => console.error(error));
+  }
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0,
   };
+  function success(pos) {
+    var crd = pos.coords;
+    findPosContext.setLat(crd.latitude);
+    findPosContext.setLong(crd.longitude);
+    findPosContext.setAccuracy(crd.accuracy);
+    getLocationInfo(crd.latitude, crd.longitude);
+  }
 
-  const onError = (error) => {
-    setError(error.message);
-  };
+  function errors(err) {
+    console.warn(`Ошибка определения положения: (${err.code}): ${err.message}`);
+  }
 
   useEffect(() => {
-    const geo = navigator.geolocation;
-
-    if (!geo) {
-      setError('Геолокация не поддерживается браузером');
-      return;
-    }
-
-    // Подписываемся на изменение геопозиции браузера.
-    watcher = geo.watchPosition(onChange, onError);
-
-    // В случае, если компонент будет удаляться с экрана
-    // производим отписку от слежки, чтобы не засорять память.
-    return () => geo.clearWatch(watcher);
+    if (navigator.geolocation) {
+      navigator.permissions
+        .query({ name: "geolocation" })
+        .then(function (result) {
+          console.log(result);
+          if (result.state === "granted") {navigator.geolocation.getCurrentPosition(success, errors, options);}
+          else if (result.state === "prompt") {navigator.geolocation.getCurrentPosition(success, errors, options);}
+          else if (result.state === "denied") {}
+        });
+    } else {console.log("Доступ к геоданным закрыт браузером");}
   }, []);
-
-  return {...position, error};
+  return (
+    <div>
+      {findPosContext.location ? <>Your location: {findPosContext.location}</> : null}
+      <p>Широта: {findPosContext.lat}</p>
+      <p>Долгота: {findPosContext.long}</p>
+      <p>Точность: {findPosContext.accuracy}</p>
+    </div>
+  )
 }
+
+export default FindPos
